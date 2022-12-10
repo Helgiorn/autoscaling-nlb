@@ -1,5 +1,5 @@
-resource "aws_lb" "artifactory_lb" {
-  name               = "artifactory_lb"
+resource "aws_lb" "artifactory" {
+  name               = "artifactory"
   internal           = false
   load_balancer_type = "network"
   subnets            = ""
@@ -16,7 +16,6 @@ resource "aws_lb" "artifactory_lb" {
     subnet_id     = aws_subnet.example1.id
     allocation_id = aws_eip.example1.id
   }
-
   tags = {
     owner  = ""
     tenant = ""
@@ -24,19 +23,19 @@ resource "aws_lb" "artifactory_lb" {
   }
 }
 
-resource "aws_lb_listener" "artifactory_lb_listener" {
-  load_balancer_arn = aws_lb.artifactory_lb.arn
+resource "aws_lb_listener" "artifactory" {
+  load_balancer_arn = aws_lb.artifactory.arn
   port              = "80"
   protocol          = "tcp"
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.artifactory_target_group.arn
+    target_group_arn = aws_lb_target_group.artifactory.arn
   }
 }
 
-resource "aws_lb_target_group" "artifactory_target_group" {
-  name        = "artifactory_target_group"
+resource "aws_lb_target_group" "artifactory" {
+  name        = "artifactory"
   port        = 80
   protocol    = "HTTP"
   target_type = "ip"

@@ -5,18 +5,18 @@ resource "aws_autoscaling_group" "artifactory" {
   min_size           = 1
 
   launch_template {
-    id      = aws_launch_template.artifactory_launch_template.id
+    id      = aws_launch_template.artifactory_server.id
     version = "$Latest"
   }
 }
 resource "aws_autoscaling_attachment" "artifactory" {
-  autoscaling_group_name = aws_autoscaling_group.asg.id
-  elb                    = aws_lb.artifactory_target_group.id
-  lb_target_group_arn    = aws_lb_target_group.artifactory_target_group.arn
+  autoscaling_group_name = aws_autoscaling_group.artifactory.id
+  elb                    = aws_lb.artifactory.id
+  lb_target_group_arn    = aws_lb_target_group.artifactory.arn
 }
 
-resource "aws_launch_template" "artifactory" {
-  name                    = "artifactory-"
+resource "aws_launch_template" "artifactory_server" {
+  name                    = "artifactory_server"
   instance_type           = "t2.micro"
   image_id                = "ami-test"
   ebs_optimized           = true
@@ -35,7 +35,7 @@ resource "aws_launch_template" "artifactory" {
     }
   }
   iam_instance_profile {
-    name = "test"
+    name = "Artifactory Instance Profile"
   }
 
   monitoring {
